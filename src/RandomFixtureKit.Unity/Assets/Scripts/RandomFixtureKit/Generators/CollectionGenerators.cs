@@ -152,7 +152,7 @@ namespace RandomFixtureKit.Generators
                 var elemType = type.GetGenericArguments()[0];
                 var generator = context.GetGenerator(elemType);
                 
-                var hashSet = ReflectionHelper.CreateInstance(type) as ISet<object>;
+                var hashSet = ReflectionHelper.CreateInstance(type);
                 var addMethod = this.type.GetMethod("Add");
                 for (int i = 0; i < length; i++)
                 {
