@@ -1,4 +1,4 @@
-﻿using RandomFixtureKit.Generators;
+using RandomFixtureKit.Generators;
 using RandomFixtureKit.Resolvers;
 using System;
 using System.Collections;
@@ -260,6 +260,11 @@ namespace RandomFixtureKit.Resolvers
                  || genericDef == typeof(IReadOnlyList<>))
                 {
                     return new ArrayGenerator(type.GetGenericArguments()[0].MakeArrayType(), CollectionSize);
+                }
+                // HashSet
+                if(genericDef == typeof(HashSet<>))
+                {
+                    return new EdgeCaseCollectionGenerator(type, (x, i) => new HashSetGenerator(x, i));
                 }
                 if (genericDef == typeof(IDictionary<,>)
                  || genericDef == typeof(IReadOnlyDictionary<,>))

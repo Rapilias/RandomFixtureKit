@@ -131,6 +131,39 @@ namespace RandomFixtureKit.Generators
         }
     }
 
+    // type must implement ISet<T>
+    public class HashSetGenerator : IGenerator
+    {
+        readonly Type type;
+        readonly int length;
+        
+        public HashSetGenerator(Type type, int length)
+        {
+            this.type = type;
+            this.length = length;
+        }
+        
+        public Type Type => type;
+        
+        public object Generate(in GenerationContext context)
+        {
+            using (var scope = context.TypeStack.Enter(Type))
+            {
+                var elemType = type.GetGenericArguments()[0];
+                var generator = context.GetGenerator(elemType);
+                
+                var hashSet = ReflectionHelper.CreateInstance(type) as ISet<object>;
+                var addMethod = this.type.GetMethod("Add");
+                for (int i = 0; i < length; i++)
+                {
+                    addMethod.Invoke(hashSet, new []{ generator.Generate(context) });
+                }
+                
+                return hashSet;
+            }
+        }
+    }
+
     // type must implement IDictionary
     public class DictionaryGenerator : IGenerator
     {

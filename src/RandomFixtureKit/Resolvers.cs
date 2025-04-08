@@ -1,4 +1,4 @@
-﻿using RandomFixtureKit.Generators;
+using RandomFixtureKit.Generators;
 using RandomFixtureKit.Resolvers;
 using System;
 using System.Collections;
@@ -369,7 +369,11 @@ namespace RandomFixtureKit.Resolvers
                 {
                     return new EdgeCaseCollectionGenerator(type, (x, i) => new ConcurrentStackGenerator(x, i));
                 }
-
+                // HashSet
+                if(genericDef == typeof(HashSet<>))
+                {
+                    return new EdgeCaseCollectionGenerator(type, (x, i) => new HashSetGenerator(x, i));
+                }
                 // interfaces
                 if (genericDef == typeof(IEnumerable<>)
                  || genericDef == typeof(ICollection<>)
