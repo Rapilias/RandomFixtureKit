@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace RandomFixtureKit
@@ -15,7 +15,12 @@ namespace RandomFixtureKit
         public object Create(Type type, int recursiveCount = 3, IGeneratorResolver resolver = null)
         {
             resolver = resolver ?? defaultResolver;
-            return resolver.GetGenerator(type).Generate(new GenerationContext(recursiveCount, new TypeStack(new Stack<Type>()), resolver, null));
+            var generator = resolver.GetGenerator(type);
+            if(generator == null)
+            {
+                throw new ArgumentException($"Generator not found for type {type}");
+            }
+            return generator.Generate(new GenerationContext(recursiveCount, new TypeStack(new Stack<Type>()), resolver, null));
         }
 
         public T Create<T>(int recursiveCount = 3, IGeneratorResolver resolver = null)
